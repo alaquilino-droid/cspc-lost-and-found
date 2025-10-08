@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{{ config('app.name', 'Campus Lost & Found') }}</title>
+
+    <!-- Bootstrap CSS (CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Optional Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Your custom styles (optional) -->
+    <style>
+        body {
+            background-color: #f9fafb;
+        }
+        :root {
+        --bs-primary: #003366;
+        --bs-link-color: #003366;
+        }
+        .navbar {
+            background-color: #0d6efd;
+        }
+        .navbar-brand, .nav-link, .navbar-text {
+            color: white !important;
+        }
+        footer {
+            margin-top: 60px;
+            padding: 20px;
+            background: #f1f1f1;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url('/') }}">Campus Lost & Found</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                @auth
+                    <li class="nav-item"><a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('items.myreports') }}">My Reports</a></li>
+                    <li class="nav-item">
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-light ms-2">Logout</button>
+                        </form>
+                    </li>
+                @else
+                    <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
+                @endauth
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="py-4">
+        <div class="container">
+            @yield('content')
+        </div>
+    </main>
+
+    <footer>
+        <p class="mb-0">© {{ date('Y') }} Campus Lost & Found Reporter</p>
+        <small>Developed for CSPC</small>
+    </footer>
+
+    <!-- Bootstrap JS (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
