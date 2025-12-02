@@ -22,7 +22,7 @@
     <div class="row">
         @foreach($items as $item)
             <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card shadow-sm">
+                <div class="item-card p-3">
                     @if($item->photo_path)
                         <img src="{{ asset('storage/' . $item->photo_path) }}" class="card-img-top" alt="Item Photo">
                     @endif
@@ -34,7 +34,7 @@
                             <strong>Location:</strong> {{ $item->location ?? 'N/A' }}<br>
                             <strong>Date:</strong> {{ $item->date_reported?->format('M d, Y') }}
                         </p>
-                        <a href="{{ route('items.show', $item) }}" class="btn btn-sm btn-outline-primary">View</a>
+                        <a href="{{ route('items.show', $item->id) }}" class="btn btn-cspc btn-sm">View</a>
                     </div>
                 </div>
             </div>
