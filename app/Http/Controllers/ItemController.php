@@ -14,11 +14,26 @@ class ItemController extends Controller
         $this->middleware('auth')->except(['index','show','search']);
     }
 
-    public function index()
-    {
-        $items = Item::latest()->paginate(10);
-        return view('items.index', compact('items'));
+    public function index(Request $request)
+{
+    $query = Item::query();
+
+    // Search functionality
+    if ($request->has('search') && $request->search !== '') {
+        $search = $request->search;
+
+        $query->where(function($q) use ($search) {
+            $q->where('name', 'LIKE', "%$search%")
+              ->orWhere('description', 'LIKE', "%$search%")
+              ->orWhere('location', 'LIKE', "%$search%");
+        });
     }
+
+    $items = $query->latest()->get();
+
+    return view('items.index', compact('items'));
+}
+
 
     public function create()
     {

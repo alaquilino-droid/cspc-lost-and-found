@@ -1,52 +1,49 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="fw-bold">Campus Lost & Found</h1>
-    @auth
-        <a href="{{ route('items.create') }}" class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i> Report New Item
-        </a>
-    @endauth
-</div>
+<div class="container my-5">
 
-<form action="{{ route('items.search') }}" method="GET" class="mb-3">
-    <div class="input-group">
-        <input type="text" name="q" class="form-control" value="{{ request('q') }}"
-               placeholder="Search by keyword, description...">
-        <button class="btn btn-outline-primary"><i class="bi bi-search"></i> Search</button>
+    <div class="item-card p-4 mb-4">
+        <h1 class="page-title">Search Lost & Found Items</h1>
+
+        <div class="d-flex justify-content-end mb-3">
+            <a href="{{ route('items.create') }}" class="btn btn-cspc">
+                <i class="bi bi-plus-circle"></i> Report New Item
+            </a>
+        </div>
+
+        <form action="{{ route('items.index') }}" method="GET" class="d-flex mb-3">
+            <input type="text" name="search" class="form-control" placeholder="Search..." value="{{ request('search') }}">
+            <button class="btn btn-cspc ms-2">Search</button>
+        </form> 
     </div>
-</form>
 
-@if($items->count())
-    <div class="row">
-        @foreach($items as $item)
-            <div class="col-md-6 col-lg-4 mb-4">
+    <div class="row g-4">
+        @forelse($items as $item)
+            <div class="col-md-4">
                 <div class="item-card p-3">
+
                     @if($item->photo_path)
-                        <img src="{{ asset('storage/' . $item->photo_path) }}" class="card-img-top" alt="Item Photo">
+                        <img src="{{ asset('storage/' . $item->photo_path) }}" 
+                             class="img-fluid rounded mb-3" style="height: 180px; object-fit: cover;">
                     @endif
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $item->name ?? ucfirst($item->type).' item' }}</h5>
-                        <p class="card-text text-muted">{{ Str::limit($item->description, 100) }}</p>
-                        <p class="small text-secondary mb-2">
-                            <strong>Type:</strong> {{ ucfirst($item->type) }}<br>
-                            <strong>Location:</strong> {{ $item->location ?? 'N/A' }}<br>
-                            <strong>Date:</strong> {{ $item->date_reported?->format('M d, Y') }}
-                        </p>
-                        <a href="{{ route('items.show', $item->id) }}" class="btn btn-cspc btn-sm">View</a>
-                    </div>
+
+                    <h5 class="fw-bold">{{ $item->name }}</h5>
+                    <p class="text-muted">{{ Str::limit($item->description, 80) }}</p>
+
+                    <p><strong>Type:</strong> {{ ucfirst($item->type) }}</p>
+                    <p><strong>Location:</strong> {{ $item->location }}</p>
+                    <p><strong>Date:</strong> {{ $item->date_reported->format('M d, Y') }}</p>
+
+                    <a href="{{ route('items.show', $item->id) }}" class="btn btn-cspc mt-2 w-100">
+                        View Details
+                    </a>
+
                 </div>
             </div>
-        @endforeach
+        @empty
+            <div class="alert alert-warning">No items found.</div>
+        @endforelse
     </div>
-
-    <div class="mt-4">
-        {{ $items->links() }}
-    </div>
-@else
-    <div class="alert alert-info">
-        No items found.
-    </div>
-@endif
+</div>
 @endsection

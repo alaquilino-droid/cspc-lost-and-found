@@ -36,7 +36,12 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="{{ url('/') }}">Campus Lost & Found</a>
+        <a class="navbar-brand d-flex align-items-center" href="{{ route('dashboard') }}">
+            <img src="{{ asset('images/Camarines_Sur_Polytechnic_Colleges_Logo.png') }}" 
+                alt="CSPC Logo" 
+                style="height: 40px; margin-right: 10px;">
+            <span style="font-weight: 700;">CSPC Lost & Found</span>
+        </a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
                 @auth
@@ -45,7 +50,7 @@
                     <li class="nav-item">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="btn btn-sm btn-light ms-2">Logout</button>
+                            <button type="submit" class="btn btn-sm btn-light mt-1">Logout</button>
                         </form>
                     </li>
                 @else
@@ -65,9 +70,12 @@
         </div>
     </main>
 
-    <footer>
-        <p class="mb-0">© {{ date('Y') }} Campus Lost & Found Reporter</p>
-        <small>Developed for CSPC</small>
+    <footer class="text-center mt-5 py-4" style="background: #003366; color: white;">
+        <div>Camarines Sur Polytechnic Colleges</div>
+        <div class="text-light" style="font-size: 14px;">
+            Nabua, Camarines Sur • Lost & Found Reporting System
+        </div>
+        <div style="font-size: 13px; opacity: 0.8;">© {{ date('Y') }} CSPC — All Rights Reserved</div>
     </footer>
 
     <!-- Bootstrap JS (CDN) -->

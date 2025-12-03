@@ -1,38 +1,40 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="fw-bold">My Recent Reports</h1>
-    <a href="{{ route('items.create') }}" class="btn btn-primary">
-        <i class="bi bi-plus-circle"></i> New Report
-    </a>
-</div>
+<div class="container my-5">
 
-@if($items->count())
-    <div class="row">
-        @foreach($items as $item)
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card shadow-sm">
+    <div class="item-card p-4 mb-4">
+        <h1 class="page-title">My Recent Reports</h1>
+        <p class="text-muted">These are the items you have reported.</p>
+    </div>
+
+    <div class="row g-4">
+        @forelse($items as $item)
+            <div class="col-md-4">
+                <div class="item-card p-3">
+
                     @if($item->photo_path)
-                        <img src="{{ asset('storage/' . $item->photo_path) }}" class="card-img-top" alt="Item Photo">
+                        <img src="{{ asset('storage/' . $item->photo_path) }}" 
+                             class="img-fluid rounded mb-3" style="height: 180px; object-fit: cover;">
                     @endif
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $item->name ?? ucfirst($item->type).' item' }}</h5>
-                        <p class="card-text text-muted">{{ Str::limit($item->description, 80) }}</p>
-                        <p class="small text-secondary">
-                            {{ ucfirst($item->type) }} | {{ $item->status }}<br>
-                            {{ $item->date_reported?->format('M d, Y') }}
-                        </p>
-                        <a href="{{ route('items.show', $item->id) }}" class="btn btn-sm btn-outline-primary">View</a>
-                        <a href="{{ route('items.edit', $item->id) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+
+                    <h5 class="fw-bold">{{ $item->name }}</h5>
+                    <p class="text-muted">{{ Str::limit($item->description, 80) }}</p>
+
+                    <p><strong>Status:</strong> {{ ucfirst($item->status) }}</p>
+
+                    <div class="mt-3 d-flex gap-2">
+                        <a href="{{ route('items.show', $item->id) }}" 
+                           class="btn btn-cspc w-50">View</a>
+
+                        <a href="{{ route('items.edit', $item->id) }}" 
+                           class="btn btn-warning w-50">Edit</a>
                     </div>
                 </div>
             </div>
-        @endforeach
+        @empty
+            <div class="alert alert-warning">You have not submitted any reports yet.</div>
+        @endforelse
     </div>
-@else
-    <div class="alert alert-info">
-        You haven’t reported any items yet.
-    </div>
-@endif
+</div>
 @endsection
