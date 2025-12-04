@@ -7,6 +7,16 @@
 
         <h1 class="page-title text-center">Create Account</h1>
 
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
@@ -30,7 +40,7 @@
                 <input type="password" name="password_confirmation" class="form-control" required>
             </div>
 
-            <button class="btn btn-cspc w-100 mb-3">Register</button>
+            <button type="submit" class="btn btn-cspc w-100 mb-3">Register</button>
 
             <div class="text-center">
                 <a href="{{ route('login') }}">Already have an account?</a>
